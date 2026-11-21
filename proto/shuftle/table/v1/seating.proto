@@ -7,19 +7,25 @@ import "shuftle/tressette/v1/seats.proto";
 
 // Who sits at each seat of the table, and whether they are connected.
 message Seating {
+  // One entry per seat.
   repeated SeatedPlayer seats = 1;
 }
 
 // The player holding one seat.
 message SeatedPlayer {
+  // The seat at the table.
   Seat seat = 1;
+  // The player holding it.
   shuftle.player.v1.PlayerId player = 2;
+  // Whether the player is connected.
   Presence presence = 3;
 }
 
 // Whether a seated player is connected to the table.
 enum Presence {
+  // Unset. Never valid.
   PRESENCE_UNSPECIFIED = 0;
+  // The player is subscribed to the table.
   PRESENCE_CONNECTED = 1;
   // The seat waits for its player to come back.
   PRESENCE_DISCONNECTED = 2;
@@ -27,7 +33,9 @@ enum Presence {
 
 // A seat at the table, in the game played at it.
 message Seat {
+  // The seat, in the game's own types.
   oneof game {
+    // A tressette seat.
     shuftle.tressette.v1.Seat tressette = 1;
   }
 }

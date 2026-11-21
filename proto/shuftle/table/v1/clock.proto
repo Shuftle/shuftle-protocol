@@ -6,25 +6,31 @@ import "google/protobuf/duration.proto";
 
 // How much time the seats have to act. Chosen with the table's rules.
 message TimeControl {
+  // The kind of time control. Always set.
   oneof kind {
+    // The same time for every move.
     PerMove per_move = 1;
   }
 }
 
 // Each move must be made within the same time; unused time is lost.
 message PerMove {
+  // The time allowed for each move.
   google.protobuf.Duration time = 1;
 }
 
 // The time left, measured when sent. The clocks of the seats to act run from then on; the others
 // are stopped.
 message Clock {
+  // The clock of the table's time control.
   oneof kind {
+    // The clock of a per-move time control.
     PerMoveClock per_move = 1;
   }
 }
 
 // The time the seats to act have left for this move.
 message PerMoveClock {
+  // The time left for this move.
   google.protobuf.Duration left = 1;
 }

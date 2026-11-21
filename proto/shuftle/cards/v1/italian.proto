@@ -6,30 +6,48 @@ package shuftle.cards.v1;
 
 // A card of the Italian deck.
 message ItalianCard {
+  // Which of the four suits the card belongs to.
   ItalianSuit suit = 1;
+  // Which of the ten cards of its suit it is: Ace to Seven, or one of the three face cards.
   ItalianRank rank = 2;
 }
 
 // The suit of an Italian card.
 enum ItalianSuit {
+  // Unset. Never valid.
   ITALIAN_SUIT_UNSPECIFIED = 0;
+  // Coins (denari).
   ITALIAN_SUIT_COINS = 1;
+  // Cups (coppe).
   ITALIAN_SUIT_CUPS = 2;
+  // Swords (spade).
   ITALIAN_SUIT_SWORDS = 3;
+  // Clubs (bastoni).
   ITALIAN_SUIT_CLUBS = 4;
 }
 
 // The rank of an Italian card.
 enum ItalianRank {
+  // Unset. Never valid.
   ITALIAN_RANK_UNSPECIFIED = 0;
+  // Ace (asso).
   ITALIAN_RANK_ACE = 1;
+  // Two (due).
   ITALIAN_RANK_TWO = 2;
+  // Three (tre).
   ITALIAN_RANK_THREE = 3;
+  // Four (quattro).
   ITALIAN_RANK_FOUR = 4;
+  // Five (cinque).
   ITALIAN_RANK_FIVE = 5;
+  // Six (sei).
   ITALIAN_RANK_SIX = 6;
+  // Seven (sette).
   ITALIAN_RANK_SEVEN = 7;
+  // Jack (fante).
   ITALIAN_RANK_JACK = 8;
+  // Knight (cavallo).
   ITALIAN_RANK_KNIGHT = 9;
+  // King (re).
   ITALIAN_RANK_KING = 10;
 }

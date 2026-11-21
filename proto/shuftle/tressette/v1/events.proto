@@ -8,15 +8,21 @@ import "shuftle/tressette/v1/seats.proto";
 
 // What one step did, as one viewer may see it: its notice and the events that reach the viewer.
 message Update {
+  // What kind of step it was.
   Notice notice = 1;
+  // What the step caused, in order.
   repeated Event events = 2;
 }
 
 // What kind of step happened. Public: every viewer receives it.
 message Notice {
+  // The kind of step.
   oneof kind {
+    // A chance outcome.
     ChanceNotice chance = 1;
+    // A seat's action.
     ActedNotice acted = 2;
+    // A seat's forfeit.
     ForfeitNotice forfeit = 3;
   }
 }
@@ -26,54 +32,74 @@ message ChanceNotice {}
 
 // A seat acted.
 message ActedNotice {
+  // The seat that acted.
   Seat seat = 1;
 }
 
 // A seat forfeited.
 message ForfeitNotice {
+  // The seat that forfeited.
   Seat seat = 1;
 }
 
 // Something that happened in the game.
 message Event {
+  // The kind of event.
   oneof kind {
+    // A hand was dealt.
     HandDealt hand_dealt = 1;
+    // The viewer received cards.
     CardsReceived cards_received = 2;
+    // A card was played.
     CardPlayed card_played = 3;
+    // The leader gave a signal.
     Signalled signalled = 4;
+    // A seat declared.
     Declared declared = 5;
+    // A trick was taken.
     TrickTaken trick_taken = 6;
+    // A hand was scored.
     HandScored hand_scored = 7;
+    // A seat forfeited.
     Forfeited forfeited = 8;
+    // The game was won.
     GameWon game_won = 9;
   }
 }
 
 // A new hand was dealt.
 message HandDealt {
+  // The seat that dealt.
   Seat dealer = 1;
 }
 
 // The receiving seat was dealt these cards. Only that seat receives it.
 message CardsReceived {
+  // The cards dealt to the seat.
   repeated shuftle.cards.v1.ItalianCard cards = 1;
 }
 
 // A card was played.
 message CardPlayed {
+  // The seat that played.
   Seat seat = 1;
+  // The card played.
   shuftle.cards.v1.ItalianCard card = 2;
 }
 
 // The seat that just led the trick gave a signal with its card.
 message Signalled {
+  // The seat that led.
   Seat seat = 1;
+  // The signal given.
   Signal signal = 2;
 }
 
 // A seat made a declaration.
 message Declared {
+  // The seat that declared.
   Seat seat = 1;
+  // The points the declaration is worth.
   uint32 points = 2;
   // Unset when the rules keep the declaration hidden.
   optional Declaration declaration = 3;
@@ -81,6 +107,7 @@ message Declared {
 
 // A trick was completed. Its taker leads the next one.
 message TrickTaken {
+  // The completed trick.
   CompletedTrick trick = 1;
 }
 
@@ -94,19 +121,23 @@ message HandScored {
 
 // A seat forfeited, losing the game for its team.
 message Forfeited {
+  // The seat that forfeited.
   Seat seat = 1;
 }
 
 // The game is over.
 message GameWon {
+  // The winning team.
   Team winner = 1;
 }
 
 // A trick whose four cards have been played.
 message CompletedTrick {
+  // The seat that led the trick.
   Seat leader = 1;
   // In play order, starting from the leader.
   repeated shuftle.cards.v1.ItalianCard cards = 2;
+  // The seat that took the trick.
   Seat taker = 3;
   // The signal given with the lead, if any.
   optional Signal signal = 4;

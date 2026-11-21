@@ -6,69 +6,97 @@ import "shuftle/cards/v1/italian.proto";
 
 // Something a seat can do on its turn.
 message Action {
+  // The kind of action.
   oneof kind {
+    // Plays a card.
     Play play = 1;
+    // Makes a declaration.
     Declare declare = 2;
+    // Leads a trick with a signal.
     Lead lead = 3;
   }
 }
 
 // Plays a card from the hand, or leads with it without a signal.
 message Play {
+  // The card to play.
   shuftle.cards.v1.ItalianCard card = 1;
 }
 
 // Declares an accuso or a napoli held in the hand, before playing.
 message Declare {
+  // The declaration to make.
   Declaration declaration = 1;
 }
 
 // Leads a trick with a card from the hand, giving a signal with it.
 message Lead {
+  // The card to lead.
   shuftle.cards.v1.ItalianCard card = 1;
+  // The signal given with it.
   Signal signal = 2;
 }
 
 // A declaration a seat can make.
 message Declaration {
+  // The kind of declaration.
   oneof kind {
+    // A napoli.
     Napoli napoli = 1;
+    // An accuso.
     Accuso accuso = 2;
   }
 }
 
 // The Ace, Two and Three of one suit.
 message Napoli {
+  // The suit of the three cards.
   shuftle.cards.v1.ItalianSuit suit = 1;
 }
 
 // Three or four cards of one declarable rank.
 message Accuso {
+  // The rank of the cards.
   DeclarableRank rank = 1;
+  // How many cards of that rank.
   AccusoSize size = 2;
 }
 
 // A rank that can be declared as a set.
 enum DeclarableRank {
+  // Unset. Never valid.
   DECLARABLE_RANK_UNSPECIFIED = 0;
+  // Threes, the strongest rank in a trick.
   DECLARABLE_RANK_THREE = 1;
+  // Twos, the second strongest.
   DECLARABLE_RANK_TWO = 2;
+  // Aces, the third strongest.
   DECLARABLE_RANK_ACE = 3;
 }
 
 // How many cards of one rank an accuso holds.
 enum AccusoSize {
+  // Unset. Never valid.
   ACCUSO_SIZE_UNSPECIFIED = 0;
+  // Three of the four cards of the rank.
   ACCUSO_SIZE_THREE = 1;
+  // All four cards of the rank.
   ACCUSO_SIZE_FOUR = 2;
 }
 
 // A signal the seat leading a trick may give with its card.
 enum Signal {
+  // Unset. Never valid.
   SIGNAL_UNSPECIFIED = 0;
+  // The card led is the leader's last of its suit.
   SIGNAL_VOLO = 1;
+  // The leader holds exactly one other card of the suit, King or lower.
   SIGNAL_ALTRA = 2;
+  // The leader holds two or more other cards of the suit, all King or lower.
   SIGNAL_STRISCIO = 3;
+  // Asks the leader's partner to play its best card of the suit.
   SIGNAL_BUSSO = 4;
+  // The leader keeps the Two of the suit and holds neither its Three nor its Ace. Only the first
+  // lead of a suit in a hand may carry it.
   SIGNAL_RIBUSSO = 5;
 }

@@ -11,9 +11,11 @@ import "shuftle/tressette/v1/seats.proto";
 // spectator sees the table only. Sent on subscribing; the legal fields are empty when the viewer
 // is not to act.
 message View {
+  // What the game is waiting for.
   Status status = 1;
   // The viewer's hand. Empty for a spectator.
   repeated shuftle.cards.v1.ItalianCard hand = 2;
+  // How many cards each seat holds.
   PerSeat hand_sizes = 3;
   // Unset between hands.
   optional Trick trick = 4;
@@ -21,6 +23,7 @@ message View {
   optional CompletedTrick last_trick = 5;
   // Tricks each team has taken in this hand.
   PerTeam tricks_taken = 6;
+  // The score of the game.
   PerTeam score = 7;
   // The seat that dealt the current or last hand. Unset before the first deal.
   optional Seat dealer = 8;
@@ -34,9 +37,13 @@ message View {
 
 // What the game is waiting for.
 message Status {
+  // The kind of wait.
   oneof kind {
+    // A deal.
     AwaitingDeal awaiting_deal = 1;
+    // Seats to act.
     ToAct to_act = 2;
+    // Nothing: the game is over.
     Over over = 3;
   }
 }
@@ -46,17 +53,21 @@ message AwaitingDeal {}
 
 // Waiting for these seats to act.
 message ToAct {
+  // The seats to act.
   repeated Seat seats = 1;
 }
 
 // The game is over.
 message Over {
+  // How it ended.
   Outcome outcome = 1;
 }
 
 // The result of a finished game.
 message Outcome {
+  // The winning team.
   Team winner = 1;
+  // The final score.
   PerTeam score = 2;
   // Set when the game ended because this seat forfeited.
   optional Seat forfeited = 3;
@@ -64,6 +75,7 @@ message Outcome {
 
 // The trick being played.
 message Trick {
+  // The seat that led the trick.
   Seat leader = 1;
   // In play order, starting from the leader: the cards played so far.
   repeated shuftle.cards.v1.ItalianCard cards = 2;
@@ -73,6 +85,8 @@ message Trick {
 
 // A card the viewer may lead with a signal.
 message LeadOption {
+  // The card to lead.
   shuftle.cards.v1.ItalianCard card = 1;
+  // The signal it may carry.
   Signal signal = 2;
 }

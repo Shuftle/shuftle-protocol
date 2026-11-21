@@ -30,10 +30,13 @@ service TableService {
 
 // Identifies a table.
 message TableId {
+  // The id, opaque to clients.
   string value = 1;
 }
 
+// The table to subscribe to and where to resume.
 message SubscribeRequest {
+  // The table to subscribe to.
   TableId table_id = 1;
   // The number of the last step the client has seen. 0 for a client that has seen nothing: the
   // stream then starts with a snapshot.
@@ -46,49 +49,65 @@ message SubscribeRequest {
 // are not numbered and each one replaces the previous. For a game already over, the stream ends
 // once the client has caught up.
 message SubscribeResponse {
+  // One message of the stream.
   oneof kind {
+    // The table as it stands.
     Snapshot snapshot = 1;
+    // A step of the game.
     Step step = 2;
+    // Keeps the stream alive.
     Heartbeat heartbeat = 3;
+    // Who sits where, replacing the previous seating.
     Seating seating = 4;
+    // The time left, replacing the previous clock.
     Clock clock = 5;
   }
 }
 
 // The table as it stands, after the step numbered step_no (0 before the first step).
 message Snapshot {
+  // The last step the snapshot includes.
   uint64 step_no = 1;
+  // What the subscriber may see of the table.
   View view = 2;
 }
 
 // One step of the game, numbered from 1.
 message Step {
+  // The step's number: one more than the previous step's.
   uint64 step_no = 1;
+  // What the step did, as the subscriber may see it.
   Update update = 2;
 }
 
 // Keeps the stream alive through idle timeouts. Sent on a documented interval.
 message Heartbeat {}
 
+// An action on the caller's seat.
 message ActRequest {
+  // The table to act at.
   TableId table_id = 1;
   // The number of the last step the client has seen. When the table has moved on, the call
   // fails with ABORTED: the client catches up on the stream and decides again. A retry or a
   // stale request never applies twice.
   uint64 step_no = 2;
+  // The action to take.
   Action action = 3;
 }
 
 // Empty: the resulting step arrives on the subscribe stream.
 message ActResponse {}
 
+// A forfeit of the caller's seat.
 message ForfeitRequest {
+  // The table to forfeit at.
   TableId table_id = 1;
 }
 
 // Empty: the resulting step arrives on the subscribe stream.
 message ForfeitResponse {}
 
+// Asks for one page of the caller's active tables.
 message ListActiveTablesRequest {
   // The maximum number of tables to return. The server may return fewer; 0 lets it choose.
   int32 page_size = 1;
@@ -96,7 +115,9 @@ message ListActiveTablesRequest {
   string page_token = 2;
 }
 
+// One page of the caller's active tables.
 message ListActiveTablesResponse {
+  // The tables on this page.
   repeated ActiveTable tables = 1;
   // Pass as page_token to get the next page. Empty on the last page.
   string next_page_token = 2;
@@ -104,7 +125,10 @@ message ListActiveTablesResponse {
 
 // A table where the caller holds a seat in a game that is not over.
 message ActiveTable {
+  // The table, to subscribe to when rejoining.
   TableId table_id = 1;
+  // The seat the caller holds.
   Seat seat = 2;
+  // The game, rules and time control.
   Config config = 3;
 }

@@ -6,6 +6,7 @@ import "shuftle/tressette/v1/actions.proto";
 
 // The rules a game is played with.
 message Config {
+  // How declarations work.
   Declarations declarations = 1;
   // The signals a seat leading a trick may give, each at most once. Empty: the game is played
   // without signals.
@@ -14,19 +15,25 @@ message Config {
 
 // The declaration rules of one regional variant.
 message Declarations {
+  // When a declaration may be made.
   DeclarationWindow window = 1;
+  // What the other seats learn of it.
   DeclarationVisibility visibility = 2;
 }
 
 // The tricks of a hand on which a declaration may be made.
 enum DeclarationWindow {
+  // Unset. Never valid.
   DECLARATION_WINDOW_UNSPECIFIED = 0;
+  // Only on the first trick.
   DECLARATION_WINDOW_FIRST_TRICK = 1;
+  // On any of the first three tricks.
   DECLARATION_WINDOW_FIRST_THREE_TRICKS = 2;
 }
 
 // What other seats learn when a declaration is made.
 enum DeclarationVisibility {
+  // Unset. Never valid.
   DECLARATION_VISIBILITY_UNSPECIFIED = 0;
   // Everyone learns that a declaration was made and its points, but not which one.
   DECLARATION_VISIBILITY_ANONYMOUS = 1;

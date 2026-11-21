@@ -2,32 +2,47 @@ syntax = "proto3";
 
 package shuftle.tressette.v1;
 
-// A seat at the table. North and South are partners, as are East and West.
+// A seat at the table. North and South are partners, as are East and West. Play goes
+// counter-clockwise: North, West, South, East.
 enum Seat {
+  // Unset. Never valid.
   SEAT_UNSPECIFIED = 0;
+  // Partner of South. Play passes to West.
   SEAT_NORTH = 1;
+  // Partner of West. Play passes to North.
   SEAT_EAST = 2;
+  // Partner of North. Play passes to East.
   SEAT_SOUTH = 3;
+  // Partner of East. Play passes to South.
   SEAT_WEST = 4;
 }
 
 // One of the two partnerships.
 enum Team {
+  // Unset. Never valid.
   TEAM_UNSPECIFIED = 0;
+  // North and South.
   TEAM_NORTH_SOUTH = 1;
+  // East and West.
   TEAM_EAST_WEST = 2;
 }
 
 // A value for each seat.
 message PerSeat {
+  // North's value.
   uint32 north = 1;
+  // East's value.
   uint32 east = 2;
+  // South's value.
   uint32 south = 3;
+  // West's value.
   uint32 west = 4;
 }
 
 // A value for each team.
 message PerTeam {
+  // North and South's value.
   uint32 north_south = 1;
+  // East and West's value.
   uint32 east_west = 2;
 }
