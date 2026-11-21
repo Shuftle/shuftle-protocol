@@ -1,0 +1,91 @@
+// Public queue: a player asks for a table of a given game and rules, is offered a match when
+// enough players are queued, and gets a table once every player accepts.
+syntax = "proto3";
+
+package shuftle.matchmaking.v1;
+
+import "google/protobuf/duration.proto";
+import "shuftle/table/v1/game.proto";
+import "shuftle/table/v1/seating.proto";
+import "shuftle/table/v1/table_service.proto";
+
+service MatchmakingService {
+  // Joins the public queue for a game and its rules. The stream ends after the match is found,
+  // after the player declines or fails to answer a proposed match, or when the client ends it;
+  // each of these leaves the queue.
+  rpc Enqueue(EnqueueRequest) returns (stream EnqueueResponse);
+  // Accepts a proposed match. Fails with FAILED_PRECONDITION when the proposal is no longer
+  // open.
+  rpc AcceptMatch(AcceptMatchRequest) returns (AcceptMatchResponse);
+  // Declines a proposed match and leaves the queue. Fails with FAILED_PRECONDITION when the
+  // proposal is no longer open.
+  rpc DeclineMatch(DeclineMatchRequest) returns (DeclineMatchResponse);
+}
+
+message EnqueueRequest {
+  // The player is matched only with players queued for the same game and rules.
+  shuftle.table.v1.Config config = 1;
+}
+
+// Queued first. Once enough players are queued: MatchProposed, then Acceptances after each
+// acceptance, then MatchFound when every player has accepted, or ProposalCancelled when another
+// player declined or did not answer in time.
+message EnqueueResponse {
+  oneof kind {
+    Queued queued = 1;
+    MatchFound match_found = 2;
+    Heartbeat heartbeat = 3;
+    MatchProposed match_proposed = 4;
+    Acceptances acceptances = 5;
+    ProposalCancelled proposal_cancelled = 6;
+  }
+}
+
+// The player is in the queue.
+message Queued {}
+
+// Identifies a proposed match.
+message ProposalId {
+  string value = 1;
+}
+
+// Enough players are queued: each must accept within the given time. Not answering in time
+// declines.
+message MatchProposed {
+  ProposalId proposal_id = 1;
+  google.protobuf.Duration time_to_answer = 2;
+}
+
+// How many players have accepted the proposed match, out of the players it needs.
+message Acceptances {
+  uint32 accepted = 1;
+  uint32 needed = 2;
+}
+
+// Another player declined or did not answer in time. The player is back in the queue, in the
+// place it held before the proposal.
+message ProposalCancelled {}
+
+// Every player accepted: a table formed with the player at it.
+message MatchFound {
+  shuftle.table.v1.TableId table_id = 1;
+  // The seat the player holds.
+  shuftle.table.v1.Seat seat = 2;
+}
+
+// Keeps the stream alive through idle timeouts. Sent on a documented interval.
+message Heartbeat {}
+
+message AcceptMatchRequest {
+  ProposalId proposal_id = 1;
+}
+
+// Empty: the outcome arrives on the queue stream.
+message AcceptMatchResponse {}
+
+message DeclineMatchRequest {
+  ProposalId proposal_id = 1;
+}
+
+// Empty: the queue stream ends.
+message DeclineMatchResponse {}

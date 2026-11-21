@@ -1,0 +1,31 @@
+// Protocol version: the version the server speaks, for clients to check before anything else.
+// This package never changes shape, so a client built for any version can decode it.
+//
+// Every other request carries the client's version in the `shuftle-protocol-version` metadata
+// key, as `major.minor.patch`. The server rejects a request whose version is missing or
+// incompatible with its own with FAILED_PRECONDITION; the status message states the server's
+// version.
+syntax = "proto3";
+
+package shuftle.version.v1;
+
+service VersionService {
+  // Returns the protocol version the server speaks
+  rpc GetVersion(GetVersionRequest) returns (GetVersionResponse);
+}
+
+message GetVersionRequest {}
+
+// The protocol version the server speaks. A client is compatible when it shares the major, or
+// the major and minor while the major is 0; otherwise it must update before using any other
+// service.
+message GetVersionResponse {
+  Version version = 1;
+}
+
+// A semantic version.
+message Version {
+  uint32 major = 1;
+  uint32 minor = 2;
+  uint32 patch = 3;
+}

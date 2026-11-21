@@ -1,0 +1,47 @@
+// The per-game wrappers: one oneof field per game, so a table carries any game with its own types.
+syntax = "proto3";
+
+package shuftle.table.v1;
+
+import "shuftle/table/v1/clock.proto";
+import "shuftle/tressette/v1/actions.proto";
+import "shuftle/tressette/v1/config.proto";
+import "shuftle/tressette/v1/events.proto";
+import "shuftle/tressette/v1/step.proto";
+import "shuftle/tressette/v1/view.proto";
+
+// The game a table plays, the rules it is played with and its time control.
+message Config {
+  oneof game {
+    shuftle.tressette.v1.Config tressette = 1;
+  }
+  TimeControl time_control = 2;
+}
+
+// The action a seat takes, in the game played at the table.
+message Action {
+  oneof game {
+    shuftle.tressette.v1.Action tressette = 1;
+  }
+}
+
+// Everything the subscriber is allowed to know about the game, in the game played at the table.
+message View {
+  oneof game {
+    shuftle.tressette.v1.View tressette = 1;
+  }
+}
+
+// What one step did, as the subscriber may see it.
+message Update {
+  oneof game {
+    shuftle.tressette.v1.Update tressette = 1;
+  }
+}
+
+// One stored step, in the game played at the table. Never sent to clients.
+message StepRecord {
+  oneof game {
+    shuftle.tressette.v1.Step tressette = 1;
+  }
+}

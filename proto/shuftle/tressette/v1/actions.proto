@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package shuftle.tressette.v1;
+
+import "shuftle/cards/v1/italian.proto";
+
+// Something a seat can do on its turn.
+message Action {
+  oneof kind {
+    Play play = 1;
+    Declare declare = 2;
+    Lead lead = 3;
+  }
+}
+
+// Plays a card from the hand, or leads with it without a signal.
+message Play {
+  shuftle.cards.v1.ItalianCard card = 1;
+}
+
+// Declares an accuso or a napoli held in the hand, before playing.
+message Declare {
+  Declaration declaration = 1;
+}
+
+// Leads a trick with a card from the hand, giving a signal with it.
+message Lead {
+  shuftle.cards.v1.ItalianCard card = 1;
+  Signal signal = 2;
+}
+
+// A declaration a seat can make.
+message Declaration {
+  oneof kind {
+    Napoli napoli = 1;
+    Accuso accuso = 2;
+  }
+}
+
+// The Ace, Two and Three of one suit.
+message Napoli {
+  shuftle.cards.v1.ItalianSuit suit = 1;
+}
+
+// Three or four cards of one declarable rank.
+message Accuso {
+  DeclarableRank rank = 1;
+  AccusoSize size = 2;
+}
+
+// A rank that can be declared as a set.
+enum DeclarableRank {
+  DECLARABLE_RANK_UNSPECIFIED = 0;
+  DECLARABLE_RANK_THREE = 1;
+  DECLARABLE_RANK_TWO = 2;
+  DECLARABLE_RANK_ACE = 3;
+}
+
+// How many cards of one rank an accuso holds.
+enum AccusoSize {
+  ACCUSO_SIZE_UNSPECIFIED = 0;
+  ACCUSO_SIZE_THREE = 1;
+  ACCUSO_SIZE_FOUR = 2;
+}
+
+// A signal the seat leading a trick may give with its card.
+enum Signal {
+  SIGNAL_UNSPECIFIED = 0;
+  SIGNAL_VOLO = 1;
+  SIGNAL_ALTRA = 2;
+  SIGNAL_STRISCIO = 3;
+  SIGNAL_BUSSO = 4;
+  SIGNAL_RIBUSSO = 5;
+}

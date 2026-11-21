@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package shuftle.tressette.v1;
+
+// A seat at the table. North and South are partners, as are East and West.
+enum Seat {
+  SEAT_UNSPECIFIED = 0;
+  SEAT_NORTH = 1;
+  SEAT_EAST = 2;
+  SEAT_SOUTH = 3;
+  SEAT_WEST = 4;
+}
+
+// One of the two partnerships.
+enum Team {
+  TEAM_UNSPECIFIED = 0;
+  TEAM_NORTH_SOUTH = 1;
+  TEAM_EAST_WEST = 2;
+}
+
+// A value for each seat.
+message PerSeat {
+  uint32 north = 1;
+  uint32 east = 2;
+  uint32 south = 3;
+  uint32 west = 4;
+}
+
+// A value for each team.
+message PerTeam {
+  uint32 north_south = 1;
+  uint32 east_west = 2;
+}

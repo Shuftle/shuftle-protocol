@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package shuftle.table.v1;
+
+import "shuftle/player/v1/player.proto";
+import "shuftle/tressette/v1/seats.proto";
+
+// Who sits at each seat of the table, and whether they are connected.
+message Seating {
+  repeated SeatedPlayer seats = 1;
+}
+
+// The player holding one seat.
+message SeatedPlayer {
+  Seat seat = 1;
+  shuftle.player.v1.PlayerId player = 2;
+  Presence presence = 3;
+}
+
+// Whether a seated player is connected to the table.
+enum Presence {
+  PRESENCE_UNSPECIFIED = 0;
+  PRESENCE_CONNECTED = 1;
+  // The seat waits for its player to come back.
+  PRESENCE_DISCONNECTED = 2;
+}
+
+// A seat at the table, in the game played at it.
+message Seat {
+  oneof game {
+    shuftle.tressette.v1.Seat tressette = 1;
+  }
+}

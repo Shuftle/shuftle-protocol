@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package shuftle.tressette.v1;
+
+import "shuftle/cards/v1/italian.proto";
+import "shuftle/tressette/v1/actions.proto";
+import "shuftle/tressette/v1/seats.proto";
+
+// One stored step of a game. Holds the full deal: never sent to clients as is.
+message Step {
+  oneof kind {
+    Deal deal = 1;
+    Act act = 2;
+    Forfeit forfeit = 3;
+  }
+}
+
+// The chance outcome of tressette: a whole deal.
+message Deal {
+  Seat dealer = 1;
+  Hand north = 2;
+  Hand east = 3;
+  Hand south = 4;
+  Hand west = 5;
+}
+
+// The cards one seat holds.
+message Hand {
+  repeated shuftle.cards.v1.ItalianCard cards = 1;
+}
+
+// A seat acting.
+message Act {
+  Seat seat = 1;
+  Action action = 2;
+}
+
+// A seat forfeiting.
+message Forfeit {
+  Seat seat = 1;
+}

@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package shuftle.tressette.v1;
+
+import "shuftle/tressette/v1/actions.proto";
+
+// The rules a game is played with.
+message Config {
+  Declarations declarations = 1;
+  // The signals a seat leading a trick may give, each at most once. Empty: the game is played
+  // without signals.
+  repeated Signal signals = 2;
+}
+
+// The declaration rules of one regional variant.
+message Declarations {
+  DeclarationWindow window = 1;
+  DeclarationVisibility visibility = 2;
+}
+
+// The tricks of a hand on which a declaration may be made.
+enum DeclarationWindow {
+  DECLARATION_WINDOW_UNSPECIFIED = 0;
+  DECLARATION_WINDOW_FIRST_TRICK = 1;
+  DECLARATION_WINDOW_FIRST_THREE_TRICKS = 2;
+}
+
+// What other seats learn when a declaration is made.
+enum DeclarationVisibility {
+  DECLARATION_VISIBILITY_UNSPECIFIED = 0;
+  // Everyone learns that a declaration was made and its points, but not which one.
+  DECLARATION_VISIBILITY_ANONYMOUS = 1;
+  // Everyone learns the exact declaration.
+  DECLARATION_VISIBILITY_EXACT = 2;
+}

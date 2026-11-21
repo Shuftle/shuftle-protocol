@@ -1,0 +1,110 @@
+// A table: the step log of one game, generic over the game being played.
+// Clients subscribe to a table, get its state or the steps they missed, then every new step, and
+// act on a given step number.
+syntax = "proto3";
+
+package shuftle.table.v1;
+
+import "shuftle/table/v1/clock.proto";
+import "shuftle/table/v1/game.proto";
+import "shuftle/table/v1/seating.proto";
+
+// Every call naming a table fails with NOT_FOUND when the table does not exist, and with
+// PERMISSION_DENIED when the caller holds no seat at it.
+service TableService {
+  // Streams the table as the caller's seat may see it: a snapshot of its current state for a
+  // client that has seen nothing, else the steps it missed; then the seating and the clock, and
+  // every new step and change. The stream ends after the step that ends the game.
+  rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
+  // Takes an action at the table, on the caller's seat. Fails with FAILED_PRECONDITION when the
+  // action breaks the rules or the game is not waiting on the seat; the status message says why.
+  rpc Act(ActRequest) returns (ActResponse);
+  // Gives up the game on the caller's seat, at any point. What that means is up to the game: in
+  // tressette the seat's team loses. Fails with FAILED_PRECONDITION when the game is over or the
+  // seat already forfeited.
+  rpc Forfeit(ForfeitRequest) returns (ForfeitResponse);
+  // Lists the tables where the caller holds a seat in a game that is not over, so a returning
+  // player can rejoin them.
+  rpc ListActiveTables(ListActiveTablesRequest) returns (ListActiveTablesResponse);
+}
+
+// Identifies a table.
+message TableId {
+  string value = 1;
+}
+
+message SubscribeRequest {
+  TableId table_id = 1;
+  // The number of the last step the client has seen. 0 for a client that has seen nothing: the
+  // stream then starts with a snapshot.
+  uint64 since_step = 2;
+}
+
+// A snapshot when since_step is 0, then every step after the snapshot or after since_step that
+// was already taken, then the seating and the clock. From then on: each new step as it happens,
+// followed by the clock; the seating whenever it changes. Seating and clock are not steps: they
+// are not numbered and each one replaces the previous. For a game already over, the stream ends
+// once the client has caught up.
+message SubscribeResponse {
+  oneof kind {
+    Snapshot snapshot = 1;
+    Step step = 2;
+    Heartbeat heartbeat = 3;
+    Seating seating = 4;
+    Clock clock = 5;
+  }
+}
+
+// The table as it stands, after the step numbered step_no (0 before the first step).
+message Snapshot {
+  uint64 step_no = 1;
+  View view = 2;
+}
+
+// One step of the game, numbered from 1.
+message Step {
+  uint64 step_no = 1;
+  Update update = 2;
+}
+
+// Keeps the stream alive through idle timeouts. Sent on a documented interval.
+message Heartbeat {}
+
+message ActRequest {
+  TableId table_id = 1;
+  // The number of the last step the client has seen. When the table has moved on, the call
+  // fails with ABORTED: the client catches up on the stream and decides again. A retry or a
+  // stale request never applies twice.
+  uint64 step_no = 2;
+  Action action = 3;
+}
+
+// Empty: the resulting step arrives on the subscribe stream.
+message ActResponse {}
+
+message ForfeitRequest {
+  TableId table_id = 1;
+}
+
+// Empty: the resulting step arrives on the subscribe stream.
+message ForfeitResponse {}
+
+message ListActiveTablesRequest {
+  // The maximum number of tables to return. The server may return fewer; 0 lets it choose.
+  int32 page_size = 1;
+  // The next_page_token of the previous response, or empty for the first page.
+  string page_token = 2;
+}
+
+message ListActiveTablesResponse {
+  repeated ActiveTable tables = 1;
+  // Pass as page_token to get the next page. Empty on the last page.
+  string next_page_token = 2;
+}
+
+// A table where the caller holds a seat in a game that is not over.
+message ActiveTable {
+  TableId table_id = 1;
+  Seat seat = 2;
+  Config config = 3;
+}

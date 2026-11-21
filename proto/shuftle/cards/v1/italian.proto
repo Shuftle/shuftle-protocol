@@ -1,0 +1,35 @@
+// Italian playing cards: the 40-card deck shared by the Italian card games. Mirrors shuftlib's
+// cards::italian module.
+syntax = "proto3";
+
+package shuftle.cards.v1;
+
+// A card of the Italian deck.
+message ItalianCard {
+  ItalianSuit suit = 1;
+  ItalianRank rank = 2;
+}
+
+// The suit of an Italian card.
+enum ItalianSuit {
+  ITALIAN_SUIT_UNSPECIFIED = 0;
+  ITALIAN_SUIT_COINS = 1;
+  ITALIAN_SUIT_CUPS = 2;
+  ITALIAN_SUIT_SWORDS = 3;
+  ITALIAN_SUIT_CLUBS = 4;
+}
+
+// The rank of an Italian card.
+enum ItalianRank {
+  ITALIAN_RANK_UNSPECIFIED = 0;
+  ITALIAN_RANK_ACE = 1;
+  ITALIAN_RANK_TWO = 2;
+  ITALIAN_RANK_THREE = 3;
+  ITALIAN_RANK_FOUR = 4;
+  ITALIAN_RANK_FIVE = 5;
+  ITALIAN_RANK_SIX = 6;
+  ITALIAN_RANK_SEVEN = 7;
+  ITALIAN_RANK_JACK = 8;
+  ITALIAN_RANK_KNIGHT = 9;
+  ITALIAN_RANK_KING = 10;
+}

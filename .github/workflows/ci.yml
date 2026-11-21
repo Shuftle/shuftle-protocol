@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  buf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: bufbuild/buf-action@v1
+        with:
+          # No Buf Schema Registry: lint, format and breaking only.
+          push: false
+          archive: false

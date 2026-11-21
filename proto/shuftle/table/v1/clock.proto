@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package shuftle.table.v1;
+
+import "google/protobuf/duration.proto";
+
+// How much time the seats have to act. Chosen with the table's rules.
+message TimeControl {
+  oneof kind {
+    PerMove per_move = 1;
+  }
+}
+
+// Each move must be made within the same time; unused time is lost.
+message PerMove {
+  google.protobuf.Duration time = 1;
+}
+
+// The time left, measured when sent. The clocks of the seats to act run from then on; the others
+// are stopped.
+message Clock {
+  oneof kind {
+    PerMoveClock per_move = 1;
+  }
+}
+
+// The time the seats to act have left for this move.
+message PerMoveClock {
+  google.protobuf.Duration left = 1;
+}
