@@ -1,7 +1,7 @@
 // Players: who takes part in games, independent of how they sign in.
 syntax = "proto3";
 
-package shuftle.player.v1;
+package shuftle.player.v1alpha1;
 
 // Identifies a player.
 message PlayerId {

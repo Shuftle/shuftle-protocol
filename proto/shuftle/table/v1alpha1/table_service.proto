@@ -3,11 +3,11 @@
 // act on a given step number.
 syntax = "proto3";
 
-package shuftle.table.v1;
+package shuftle.table.v1alpha1;
 
-import "shuftle/table/v1/clock.proto";
-import "shuftle/table/v1/game.proto";
-import "shuftle/table/v1/seating.proto";
+import "shuftle/table/v1alpha1/clock.proto";
+import "shuftle/table/v1alpha1/game.proto";
+import "shuftle/table/v1alpha1/seating.proto";
 
 // Every call naming a table fails with NOT_FOUND when the table does not exist, and with
 // PERMISSION_DENIED when the caller holds no seat at it.

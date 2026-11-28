@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package shuftle.table.v1;
+package shuftle.table.v1alpha1;
 
-import "shuftle/player/v1/player.proto";
-import "shuftle/tressette/v1/seats.proto";
+import "shuftle/player/v1alpha1/player.proto";
+import "shuftle/tressette/v1alpha1/seats.proto";
 
 // Who sits at each seat of the table, and whether they are connected.
 message Seating {
@@ -16,7 +16,7 @@ message SeatedPlayer {
   // The seat at the table.
   Seat seat = 1;
   // The player holding it.
-  shuftle.player.v1.PlayerId player = 2;
+  shuftle.player.v1alpha1.PlayerId player = 2;
   // Whether the player is connected.
   Presence presence = 3;
 }
@@ -36,6 +36,6 @@ message Seat {
   // The seat, in the game's own types.
   oneof game {
     // A tressette seat.
-    shuftle.tressette.v1.Seat tressette = 1;
+    shuftle.tressette.v1alpha1.Seat tressette = 1;
   }
 }

@@ -1,21 +1,21 @@
 // The per-game wrappers: one oneof field per game, so a table carries any game with its own types.
 syntax = "proto3";
 
-package shuftle.table.v1;
+package shuftle.table.v1alpha1;
 
-import "shuftle/table/v1/clock.proto";
-import "shuftle/tressette/v1/actions.proto";
-import "shuftle/tressette/v1/config.proto";
-import "shuftle/tressette/v1/events.proto";
-import "shuftle/tressette/v1/step.proto";
-import "shuftle/tressette/v1/view.proto";
+import "shuftle/table/v1alpha1/clock.proto";
+import "shuftle/tressette/v1alpha1/actions.proto";
+import "shuftle/tressette/v1alpha1/config.proto";
+import "shuftle/tressette/v1alpha1/events.proto";
+import "shuftle/tressette/v1alpha1/step.proto";
+import "shuftle/tressette/v1alpha1/view.proto";
 
 // The game a table plays, the rules it is played with and its time control.
 message Config {
   // The game and its rules.
   oneof game {
     // Tressette, with its rules.
-    shuftle.tressette.v1.Config tressette = 1;
+    shuftle.tressette.v1alpha1.Config tressette = 1;
   }
   // The time the seats have to act.
   TimeControl time_control = 2;
@@ -26,7 +26,7 @@ message Action {
   // The action, in the game's own types.
   oneof game {
     // A tressette action.
-    shuftle.tressette.v1.Action tressette = 1;
+    shuftle.tressette.v1alpha1.Action tressette = 1;
   }
 }
 
@@ -35,7 +35,7 @@ message View {
   // The view, in the game's own types.
   oneof game {
     // A tressette view.
-    shuftle.tressette.v1.View tressette = 1;
+    shuftle.tressette.v1alpha1.View tressette = 1;
   }
 }
 
@@ -44,7 +44,7 @@ message Update {
   // The update, in the game's own types.
   oneof game {
     // A tressette update.
-    shuftle.tressette.v1.Update tressette = 1;
+    shuftle.tressette.v1alpha1.Update tressette = 1;
   }
 }
 
@@ -53,6 +53,6 @@ message StepRecord {
   // The step, in the game's own types.
   oneof game {
     // A tressette step.
-    shuftle.tressette.v1.Step tressette = 1;
+    shuftle.tressette.v1alpha1.Step tressette = 1;
   }
 }

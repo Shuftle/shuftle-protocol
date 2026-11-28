@@ -2,12 +2,12 @@
 // enough players are queued, and gets a table once every player accepts.
 syntax = "proto3";
 
-package shuftle.matchmaking.v1;
+package shuftle.matchmaking.v1alpha1;
 
 import "google/protobuf/duration.proto";
-import "shuftle/table/v1/game.proto";
-import "shuftle/table/v1/seating.proto";
-import "shuftle/table/v1/table_service.proto";
+import "shuftle/table/v1alpha1/game.proto";
+import "shuftle/table/v1alpha1/seating.proto";
+import "shuftle/table/v1alpha1/table_service.proto";
 
 // Matches queued players into tables.
 service MatchmakingService {
@@ -26,7 +26,7 @@ service MatchmakingService {
 // What the player queues for.
 message EnqueueRequest {
   // The player is matched only with players queued for the same game and rules.
-  shuftle.table.v1.Config config = 1;
+  shuftle.table.v1alpha1.Config config = 1;
 }
 
 // Queued first. Once enough players are queued: MatchProposed, then Acceptances after each
@@ -83,9 +83,9 @@ message ProposalCancelled {}
 // Every player accepted: a table formed with the player at it.
 message MatchFound {
   // The table to subscribe to.
-  shuftle.table.v1.TableId table_id = 1;
+  shuftle.table.v1alpha1.TableId table_id = 1;
   // The seat the player holds.
-  shuftle.table.v1.Seat seat = 2;
+  shuftle.table.v1alpha1.Seat seat = 2;
 }
 
 // Keeps the stream alive through idle timeouts. Sent on a documented interval.

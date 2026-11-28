@@ -2,7 +2,7 @@
 // cards::italian module.
 syntax = "proto3";
 
-package shuftle.cards.v1;
+package shuftle.cards.v1alpha1;
 
 // A card of the Italian deck.
 message ItalianCard {

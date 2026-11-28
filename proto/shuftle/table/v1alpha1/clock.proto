@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package shuftle.table.v1;
+package shuftle.table.v1alpha1;
 
 import "google/protobuf/duration.proto";
 
