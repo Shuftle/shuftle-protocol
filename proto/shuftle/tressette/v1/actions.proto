@@ -23,7 +23,7 @@ message Play {
   shuftle.cards.v1.ItalianCard card = 1;
 }
 
-// Declares an accuso or a napoli held in the hand, before playing.
+// Declares a set of cards held in the hand, before playing.
 message Declare {
   // The declaration to make.
   Declaration declaration = 1;
@@ -43,8 +43,10 @@ message Declaration {
   oneof kind {
     // A napoli.
     Napoli napoli = 1;
-    // An accuso.
-    Accuso accuso = 2;
+    // A three of a kind.
+    ThreeOfAKind three_of_a_kind = 2;
+    // A four of a kind.
+    FourOfAKind four_of_a_kind = 3;
   }
 }
 
@@ -54,12 +56,18 @@ message Napoli {
   shuftle.cards.v1.ItalianSuit suit = 1;
 }
 
-// Three or four cards of one declarable rank.
-message Accuso {
+// The cards of one declarable rank in every suit but one.
+message ThreeOfAKind {
   // The rank of the cards.
   DeclarableRank rank = 1;
-  // How many cards of that rank.
-  AccusoSize size = 2;
+  // The suit whose card of that rank is not part of it.
+  shuftle.cards.v1.ItalianSuit missing = 2;
+}
+
+// The cards of one declarable rank in every suit.
+message FourOfAKind {
+  // The rank of the cards.
+  DeclarableRank rank = 1;
 }
 
 // A rank that can be declared as a set.
@@ -72,16 +80,6 @@ enum DeclarableRank {
   DECLARABLE_RANK_TWO = 2;
   // Aces, the third strongest.
   DECLARABLE_RANK_ACE = 3;
-}
-
-// How many cards of one rank an accuso holds.
-enum AccusoSize {
-  // Unset. Never valid.
-  ACCUSO_SIZE_UNSPECIFIED = 0;
-  // Three of the four cards of the rank.
-  ACCUSO_SIZE_THREE = 1;
-  // All four cards of the rank.
-  ACCUSO_SIZE_FOUR = 2;
 }
 
 // A signal the seat leading a trick may give with its card.

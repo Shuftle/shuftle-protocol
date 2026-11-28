@@ -99,10 +99,25 @@ message Signalled {
 message Declared {
   // The seat that declared.
   Seat seat = 1;
+  // What everyone sees of the declaration.
+  DeclarationSeen seen = 2;
+}
+
+// What everyone sees of a declaration a seat made.
+message DeclarationSeen {
+  // How much of it is seen.
+  oneof kind {
+    // The declaration itself.
+    Declaration exact = 1;
+    // Only its points, as the rules keep the declaration hidden.
+    HiddenDeclaration hidden = 2;
+  }
+}
+
+// A declaration the rules keep hidden.
+message HiddenDeclaration {
   // The points the declaration is worth.
-  uint32 points = 2;
-  // Unset when the rules keep the declaration hidden.
-  optional Declaration declaration = 3;
+  uint32 points = 1;
 }
 
 // A trick was completed. Its taker leads the next one.
