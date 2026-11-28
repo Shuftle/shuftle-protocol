@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package shuftle.tressette.v1;
+package shuftle.tressette.v1alpha1;
 
-import "shuftle/cards/v1/italian.proto";
-import "shuftle/tressette/v1/actions.proto";
-import "shuftle/tressette/v1/events.proto";
-import "shuftle/tressette/v1/seats.proto";
+import "shuftle/cards/v1alpha1/italian.proto";
+import "shuftle/tressette/v1alpha1/actions.proto";
+import "shuftle/tressette/v1alpha1/events.proto";
+import "shuftle/tressette/v1alpha1/seats.proto";
 
 // Everything the viewer is allowed to know about the game: its own hand and the table. A
 // spectator sees the table only. Sent on subscribing; the legal fields are empty when the viewer
@@ -14,7 +14,7 @@ message View {
   // What the game is waiting for.
   Status status = 1;
   // The viewer's hand. Empty for a spectator.
-  repeated shuftle.cards.v1.ItalianCard hand = 2;
+  repeated shuftle.cards.v1alpha1.ItalianCard hand = 2;
   // How many cards each seat holds.
   PerSeat hand_sizes = 3;
   // Unset between hands.
@@ -28,7 +28,7 @@ message View {
   // The seat that dealt the current or last hand. Unset before the first deal.
   optional Seat dealer = 8;
   // The cards the viewer may play now.
-  repeated shuftle.cards.v1.ItalianCard legal_cards = 9;
+  repeated shuftle.cards.v1alpha1.ItalianCard legal_cards = 9;
   // The declarations the viewer may make now.
   repeated Declaration declarable = 10;
   // The cards the viewer may lead with a signal now, each with the signal.
@@ -93,7 +93,7 @@ message Trick {
   // The seat that led the trick.
   Seat leader = 1;
   // In play order, starting from the leader: the cards played so far.
-  repeated shuftle.cards.v1.ItalianCard cards = 2;
+  repeated shuftle.cards.v1alpha1.ItalianCard cards = 2;
   // The signal given with the lead, if any.
   optional Signal signal = 3;
 }
@@ -101,7 +101,7 @@ message Trick {
 // A card the viewer may lead with a signal.
 message LeadOption {
   // The card to lead.
-  shuftle.cards.v1.ItalianCard card = 1;
+  shuftle.cards.v1alpha1.ItalianCard card = 1;
   // The signal it may carry.
   Signal signal = 2;
 }

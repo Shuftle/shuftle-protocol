@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package shuftle.tressette.v1;
+package shuftle.tressette.v1alpha1;
 
 // A seat at the table. North and South are partners, as are East and West. Play goes
 // counter-clockwise: North, West, South, East.

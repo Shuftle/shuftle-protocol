@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package shuftle.tressette.v1;
+package shuftle.tressette.v1alpha1;
 
-import "shuftle/cards/v1/italian.proto";
+import "shuftle/cards/v1alpha1/italian.proto";
 
 // Something a seat can do on its turn.
 message Action {
@@ -20,7 +20,7 @@ message Action {
 // Plays a card from the hand, or leads with it without a signal.
 message Play {
   // The card to play.
-  shuftle.cards.v1.ItalianCard card = 1;
+  shuftle.cards.v1alpha1.ItalianCard card = 1;
 }
 
 // Declares a set of cards held in the hand, before playing.
@@ -32,7 +32,7 @@ message Declare {
 // Leads a trick with a card from the hand, giving a signal with it.
 message Lead {
   // The card to lead.
-  shuftle.cards.v1.ItalianCard card = 1;
+  shuftle.cards.v1alpha1.ItalianCard card = 1;
   // The signal given with it.
   Signal signal = 2;
 }
@@ -53,7 +53,7 @@ message Declaration {
 // The Ace, Two and Three of one suit.
 message Napoli {
   // The suit of the three cards.
-  shuftle.cards.v1.ItalianSuit suit = 1;
+  shuftle.cards.v1alpha1.ItalianSuit suit = 1;
 }
 
 // The cards of one declarable rank in every suit but one.
@@ -61,7 +61,7 @@ message ThreeOfAKind {
   // The rank of the cards.
   DeclarableRank rank = 1;
   // The suit whose card of that rank is not part of it.
-  shuftle.cards.v1.ItalianSuit missing = 2;
+  shuftle.cards.v1alpha1.ItalianSuit missing = 2;
 }
 
 // The cards of one declarable rank in every suit.

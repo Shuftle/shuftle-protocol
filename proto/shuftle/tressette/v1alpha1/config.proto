@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package shuftle.tressette.v1;
+package shuftle.tressette.v1alpha1;
 
-import "shuftle/tressette/v1/actions.proto";
+import "shuftle/tressette/v1alpha1/actions.proto";
 
 // The rules a game is played with.
 message Config {
