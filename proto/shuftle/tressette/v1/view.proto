@@ -33,6 +33,21 @@ message View {
   repeated Declaration declarable = 10;
   // The cards the viewer may lead with a signal now, each with the signal.
   repeated LeadOption leads = 11;
+  // In order, the declarations each seat made in this hand: exact for the viewer's own, as
+  // everyone sees them for the others. Empty between hands.
+  DeclarationsPerSeat declared = 12;
+}
+
+// The declarations each seat made, in order.
+message DeclarationsPerSeat {
+  // North's declarations.
+  repeated DeclarationSeen north = 1;
+  // East's declarations.
+  repeated DeclarationSeen east = 2;
+  // South's declarations.
+  repeated DeclarationSeen south = 3;
+  // West's declarations.
+  repeated DeclarationSeen west = 4;
 }
 
 // What the game is waiting for.
